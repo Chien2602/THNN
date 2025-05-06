@@ -1,0 +1,36 @@
+{
+  "type": "module",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.4",
+    "axios-cookiejar-support": "^6.0.1",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.5.0",
+    "encrypt": "^0.0.1",
+    "express": "^5.1.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2",
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.1.9",
+    "path": "^0.12.7",
+    "puppeteer": "^24.7.0",
+    "request-promise": "^4.2.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "tough-cookie-file-store": "^3.0.0",
+    "zingmp3-api-full-v3": "^3.0.0"
+  },
+  "name": "music-web-be",
+  "version": "1.0.0",
+  "main": "server.js",
+  "devDependencies": {},
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}

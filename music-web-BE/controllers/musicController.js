@@ -118,6 +118,27 @@ const getGenre = async (req, res) => {
   }
 };
 
+const getHotSongGenre = async (req, res) => {
+  try {
+    const response = await client.get(process.env.API_HOTSONG_GENRE, {
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36",
+        Referer: "https://zingmp3.vn/hub",
+        Origin: "https://zingmp3.vn",
+        Accept: "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7",
+        Cookie: cookieJar,
+      },
+    });
+    res.json(response?.data?.data?.session[1].items);
+  } catch (err) {
+    console.error("API Error:", err.message);
+    res.status(500).json({ error: "Failed to fetch genre" });
+  }
+};
+
 const getAllArtist = async (req, res) => {
   try {
     const allArtists = [];
@@ -152,4 +173,5 @@ export {
   getVideo,
   getGenre,
   getAllArtist,
+  getHotSongGenre
 };

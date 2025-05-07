@@ -54,6 +54,10 @@ export default function PlaylistPage() {
     return count
   }
 
+  const handleClickSong = (song) => {
+    setCurrentSong(song);
+  }
+
   if (!currentPlaylist) {
     return (
       <div className="flex-1 flex items-center justify-center">
@@ -168,7 +172,7 @@ export default function PlaylistPage() {
                       "group border-b border-zinc-800/50 hover:bg-zinc-800/50 transition-colors",
                       currentTrack?.encodeId === song.encodeId && "bg-zinc-800/70",
                     )}
-                    onClick={() => handlePlaySong(song)}
+                    onClick={() => handleClickSong(song)}
                   >
                     <td className="px-4 py-3 w-12">
                       <div className="relative w-5 h-5 flex items-center justify-center">

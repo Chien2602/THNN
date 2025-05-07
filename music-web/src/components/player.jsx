@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import {
   Play,
   Pause,
@@ -12,165 +12,165 @@ import {
   ListMusic,
   VolumeX,
   Maximize2,
-} from "lucide-react"
-import { Slider } from "@/components/ui/slider"
-import { usePlayer } from "@/components/player-provider"
-import Replay10Icon from "@mui/icons-material/Replay10"
-import Forward10Icon from "@mui/icons-material/Forward10"
-import api from "@/api/AxiosInstance"
+} from "lucide-react";
+import { Slider } from "@/components/ui/slider";
+import { usePlayer } from "@/components/player-provider";
+import Replay10Icon from "@mui/icons-material/Replay10";
+import Forward10Icon from "@mui/icons-material/Forward10";
+import api from "@/api/AxiosInstance";
 
 export default function Player() {
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  const [currentTime, setCurrentTime] = useState(0)
-  const [volume, setVolume] = useState(70)
-  const [isLiked, setIsLiked] = useState(false)
-  const [isMuted, setIsMuted] = useState(false)
-  const [duration, setDuration] = useState(0)
-  const audioRef = useRef(null)
-  const activeRef = useRef(null)
-  const { currentSong, currentUser } = usePlayer()
-  const [isExpanded, setIsExpanded] = useState(false)
-  const [isFullscreen, setIsFullscreen] = useState(false)
-  const [showPlaylistAdd, setShowPlaylistAdd] = useState(false)
-  const [playlists, setPlaylists] = useState([])
+  const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(70);
+  const [isLiked, setIsLiked] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const audioRef = useRef(null);
+  const activeRef = useRef(null);
+  const { currentSong, currentUser } = usePlayer();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showPlaylistAdd, setShowPlaylistAdd] = useState(false);
+  const [playlists, setPlaylists] = useState([]);
 
   useEffect(() => {
     const fetchPlaylists = async () => {
-      if (!currentUser?._id) return
+      if (!currentUser?._id) return;
 
       try {
-        const response = await api.get(`/playlists/user/${currentUser._id}`)
+        const response = await api.get(`/playlists/user/${currentUser._id}`);
         if (response.data && Array.isArray(response.data)) {
-          setPlaylists(response.data)
-          console.log("Fetched playlists:", response.data)
+          setPlaylists(response.data);
+          console.log("Fetched playlists:", response.data);
         }
       } catch (error) {
-        console.error("Error fetching playlists:", error)
+        console.error("Error fetching playlists:", error);
       }
-    }
+    };
 
-    fetchPlaylists()
-  }, [currentUser?._id])
+    fetchPlaylists();
+  }, [currentUser?._id]);
 
-  const [lyrics, setLyrics] = useState([])
-  const [repeat, setRepeat] = useState(false)
-  const hasReported = useRef(false)
+  const [lyrics, setLyrics] = useState([]);
+  const [repeat, setRepeat] = useState(false);
+  const hasReported = useRef(false);
 
   useEffect(() => {
     const loadAndPlay = async () => {
       if (currentSong && audioRef.current) {
         try {
-          let url = currentSong.url
+          let url = currentSong.url;
           if (!url) {
-            const res = await api.get(`/song?id=${currentSong.encodeId}`)
-            url = res.data?.data?.["128"]
+            const res = await api.get(`/song?id=${currentSong.encodeId}`);
+            url = res.data?.data?.["128"];
           }
 
           if (url) {
-            audioRef.current.src = url
-            await audioRef.current.load()
-            await audioRef.current.play()
-            setIsPlaying(true)
+            audioRef.current.src = url;
+            await audioRef.current.load();
+            await audioRef.current.play();
+            setIsPlaying(true);
           } else {
-            console.error("No playable URL found for the song.")
+            console.error("No playable URL found for the song.");
           }
         } catch (error) {
-          console.error("Error loading or playing audio:", error)
+          console.error("Error loading or playing audio:", error);
         }
       }
-    }
+    };
 
-    loadAndPlay()
-  }, [currentSong?.encodeId])
+    loadAndPlay();
+  }, [currentSong?.encodeId]);
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio) return;
 
     const updateTime = () => {
-      setCurrentTime(audio.currentTime)
-    }
+      setCurrentTime(audio.currentTime);
+    };
 
     const handleLoadedMetadata = () => {
-      setDuration(audio.duration)
-    }
+      setDuration(audio.duration);
+    };
 
-    audio.addEventListener("timeupdate", updateTime)
-    audio.addEventListener("loadedmetadata", handleLoadedMetadata)
+    audio.addEventListener("timeupdate", updateTime);
+    audio.addEventListener("loadedmetadata", handleLoadedMetadata);
 
     return () => {
-      audio.removeEventListener("timeupdate", updateTime)
-      audio.removeEventListener("loadedmetadata", handleLoadedMetadata)
-    }
-  }, [])
+      audio.removeEventListener("timeupdate", updateTime);
+      audio.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, []);
 
   useEffect(() => {
     if (audioRef.current) {
-      audioRef.current.volume = volume / 100
-      setIsMuted(volume === 0)
+      audioRef.current.volume = volume / 100;
+      setIsMuted(volume === 0);
     }
-  }, [volume])
+  }, [volume]);
 
   const handlePlayPause = () => {
-    if (!audioRef.current) return
+    if (!audioRef.current) return;
 
     if (isPlaying) {
-      audioRef.current.pause()
+      audioRef.current.pause();
     } else {
-      audioRef.current.play()
+      audioRef.current.play();
     }
-    setIsPlaying(!isPlaying)
-  }
+    setIsPlaying(!isPlaying);
+  };
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio) return
+    const audio = audioRef.current;
+    if (!audio) return;
 
     const handleEnded = () => {
       if (repeat) {
-        audio.currentTime = 0
-        audio.play()
+        audio.currentTime = 0;
+        audio.play();
       } else {
-        setIsPlaying(false)
+        setIsPlaying(false);
       }
-    }
+    };
 
-    audio.addEventListener("ended", handleEnded)
+    audio.addEventListener("ended", handleEnded);
 
     return () => {
-      audio.removeEventListener("ended", handleEnded)
-    }
-  }, [repeat])
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [repeat]);
 
   const toggleMute = () => {
     if (volume > 0) {
-      setVolume(0)
+      setVolume(0);
     } else {
-      setVolume(70)
+      setVolume(70);
     }
-  }
+  };
 
-  useEffect(() => {}, [currentUser])
+  useEffect(() => {}, [currentUser]);
 
   const handleSeek = (value) => {
-    const seekTime = value[0]
-    setCurrentTime(seekTime)
+    const seekTime = value[0];
+    setCurrentTime(seekTime);
     if (audioRef.current) {
-      audioRef.current.currentTime = seekTime
+      audioRef.current.currentTime = seekTime;
     }
-  }
+  };
 
   const formatTime = (seconds) => {
-    const mins = Math.floor(seconds / 60)
-    const secs = Math.floor(seconds % 60)
-    return `${mins}:${secs < 10 ? "0" : ""}${secs}`
-  }
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   const handleAddToPlaylist = async (playlistId) => {
     if (!currentSong?.encodeId || !currentUser?._id) {
-      console.error("Cannot add to playlist: Missing song ID or user ID")
-      return
+      console.error("Cannot add to playlist: Missing song ID or user ID");
+      return;
     }
 
     try {
@@ -180,114 +180,120 @@ export default function Player() {
         thumbnail: currentSong.thumbnail,
         artistsNames: currentSong.artistsNames,
         duration: currentSong.duration,
-      })
+      });
 
-      console.log(`Added song ${currentSong.title} to playlist ${playlistId}`)
-      setShowPlaylistAdd(false)
+      console.log(`Added song ${currentSong.title} to playlist ${playlistId}`);
+      setShowPlaylistAdd(false);
     } catch (error) {
-      console.error("Error adding song to playlist:", error)
+      console.error("Error adding song to playlist:", error);
     }
-  }
+  };
 
   const toggleExpanded = () => {
-    setIsExpanded(!isExpanded)
-  }
+    setIsExpanded(!isExpanded);
+  };
 
   const toggleFullscreen = () => {
-    setIsFullscreen(!isFullscreen)
-  }
+    setIsFullscreen(!isFullscreen);
+  };
 
   const handleSkip10Seconds = (forward = true) => {
-    if (!audioRef.current) return
+    if (!audioRef.current) return;
 
-    const newTime = currentTime + (forward ? 10 : -10)
-    const boundedTime = Math.min(Math.max(0, newTime), currentSong?.duration)
+    const newTime = currentTime + (forward ? 10 : -10);
+    const boundedTime = Math.min(Math.max(0, newTime), currentSong?.duration);
 
-    audioRef.current.currentTime = boundedTime
-    setCurrentTime(boundedTime)
-  }
+    audioRef.current.currentTime = boundedTime;
+    setCurrentTime(boundedTime);
+  };
 
   useEffect(() => {
-    if (!currentSong?.encodeId) return
+    if (!currentSong?.encodeId) return;
 
     api
       .get(`/lyric?id=${currentSong.encodeId}`)
       .then((res) => res.data)
       .then((data) => {
-        console.log("Fetched lyrics:", data?.data?.sentences)
+        console.log("Fetched lyrics:", data?.data?.sentences);
         if (data?.data?.sentences) {
-          setLyrics(data.data.sentences)
+          setLyrics(data.data.sentences);
         } else {
-          setLyrics([])
+          setLyrics([]);
         }
+        console.log(currentSong);
       })
       .catch((err) => {
-        console.error("Error fetching lyrics:", err)
-        setLyrics([])
-      })
-  }, [currentSong?.encodeId])
+        console.error("Error fetching lyrics:", err);
+        setLyrics([]);
+      });
+  }, [currentSong?.encodeId]);
 
   useEffect(() => {
     if (activeRef.current) {
       activeRef.current.scrollIntoView({
         behavior: "smooth",
         block: "center",
-      })
+      });
     }
-  }, [currentTime])
+  }, [currentTime]);
 
   const handelRepeat = () => {
-    setRepeat(!repeat)
-  }
+    setRepeat(!repeat);
+  };
 
   const handleToggleFavorite = async () => {
     if (!currentSong?.encodeId || !currentUser?._id) {
-      console.error("Cannot add to favorites: Missing song ID or user ID")
-      return
+      console.error("Cannot add to favorites: Missing song ID or user ID");
+      return;
     }
 
     try {
       if (isLiked) {
-        await api.delete(`/favorites/${currentUser._id}/${currentSong.encodeId}`)
-        console.log("Removed from favorites:", currentSong.title)
-        setIsLiked(false)
+        await api.delete(
+          `/favorites/${currentUser._id}/${currentSong.encodeId}`
+        );
+        console.log("Removed from favorites:", currentSong.title);
+        setIsLiked(false);
       } else {
         await api.post("/favorites", {
           encodeId: currentSong.encodeId,
           userId: currentUser._id,
           title: currentSong.title,
-          thumbnail: currentSong.thumbnail,
+          thumbnail: currentSong.thumbnailM,
           artistsNames: currentSong.artistsNames,
           duration: currentSong.duration,
-        })
-        console.log("Added to favorites:", currentSong.title)
-        setIsLiked(true)
+          album: currentSong.album.title
+        });
+        console.log("Added to favorites:", currentSong.title);
+        setIsLiked(true);
       }
     } catch (error) {
-      console.error("Error toggling favorite status:", error)
+      console.error("Error toggling favorite status:", error);
     }
-  }
+  };
 
   useEffect(() => {
     const checkFavoriteStatus = async () => {
-      if (!currentSong?.encodeId || !currentUser?._id) return
+      if (!currentSong?.encodeId || !currentUser?._id) return;
 
       try {
-        const response = await api.get(`/favorites/${currentUser._id}/${currentSong.encodeId}`)
-        console.log("Favorite status response:", response.data)
-        setIsLiked(!!response.data)
+        const response = await api.get(
+          `/favorites/${currentUser._id}/${currentSong.encodeId}`
+        );
+        console.log("Favorite status response:", response.data);
+        setIsLiked(!!response.data);
       } catch (error) {
-        console.error("Error checking favorite status:", error)
-        setIsLiked(false)
+        console.error("Error checking favorite status:", error);
+        setIsLiked(false);
       }
-    }
+    };
 
-    checkFavoriteStatus()
-  }, [currentSong?.encodeId, currentUser?._id])
+    checkFavoriteStatus();
+  }, [currentSong?.encodeId, currentUser?._id]);
 
   useEffect(() => {
-    const audio = audioRef.current
-    if (!audio || !currentSong?.encodeId || !currentUser?._id) return
+    const audio = audioRef.current;
+    if (!audio || !currentSong?.encodeId || !currentUser?._id) return;
 
     const onTimeUpdate = () => {
       if (!hasReported.current && audio.currentTime >= audio.duration / 2) {
@@ -302,20 +308,20 @@ export default function Player() {
             duration: currentSong.duration,
           })
           .then(() => {
-            console.log("History reported successfully")
-            hasReported.current = true
+            console.log("History reported successfully");
+            hasReported.current = true;
           })
           .catch((err) => {
-            console.error("Error reporting history:", err)
-          })
+            console.error("Error reporting history:", err);
+          });
       }
-    }
+    };
 
-    audio.addEventListener("timeupdate", onTimeUpdate)
-    hasReported.current = false
+    audio.addEventListener("timeupdate", onTimeUpdate);
+    hasReported.current = false;
 
-    return () => audio.removeEventListener("timeupdate", onTimeUpdate)
-  }, [currentSong, currentUser?._id])
+    return () => audio.removeEventListener("timeupdate", onTimeUpdate);
+  }, [currentSong, currentUser?._id]);
 
   return (
     <div
@@ -323,17 +329,15 @@ export default function Player() {
         isFullscreen
           ? "fixed inset-0 z-50 flex flex-col items-center justify-start overflow-hidden bg-black/95 backdrop-blur-xl"
           : "bg-gradient-to-r from-black to-zinc-900 border-t border-gray-800/30 px-4 flex items-center"
-      } justify-between transition-all duration-500 ${isFullscreen ? "h-screen" : isExpanded ? "h-80" : "h-24"}`}
+      } justify-between transition-all duration-500 ${
+        isFullscreen ? "h-screen" : isExpanded ? "h-80" : "h-24"
+      }`}
     >
       {isFullscreen && (
         <div
           className="absolute inset-0 -z-10 opacity-30"
           style={{
-            backgroundImage: `url(${
-              currentSong?.thumbnailM ||
-              currentSong?.thumbnail ||
-              "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/2/6/2/7/2627c10c924237d129a289cc89cd695c.jpg"
-            })`,
+            backgroundImage: `url(${currentSong?.thumbnailM || currentSong?.thumbnail})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             filter: "blur(30px) brightness(0.7)",
@@ -371,7 +375,9 @@ export default function Player() {
             <h2 className="text-white text-2xl font-bold tracking-tight">
               {currentSong?.title || currentSong?.songName}
             </h2>
-            <p className="text-gray-400 text-sm mt-1">{currentSong?.artistsNames || currentSong?.artistsName}</p>
+            <p className="text-gray-400 text-sm mt-1">
+              {currentSong?.artistsNames || currentSong?.artistsName}
+            </p>
           </div>
 
           {/* Main content area with album art and lyrics side by side */}
@@ -379,17 +385,7 @@ export default function Player() {
             {/* Album art section */}
             <div className="relative group flex-shrink-0">
               <img
-                src={
-                  currentSong?.thumbnail ||
-                  "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/2/6/2/7/2627c10c924237d129a289cc89cd695c.jpg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg"
-                }
+                src={currentSong?.thumbnailM || currentSong?.thumbnail}
                 alt="Album cover"
                 className="rounded-lg shadow-2xl group-hover:brightness-90 transition-all duration-300 h-64 w-64 md:h-80 md:w-80 border border-white/10 object-cover"
               />
@@ -422,22 +418,26 @@ export default function Player() {
                   <div className="space-y-4">
                     {lyrics.map((sentence, i) => {
                       // Convert currentTime to milliseconds for comparison with lyric timestamps
-                      const currentTimeMs = currentTime * 1000
+                      const currentTimeMs = currentTime * 1000;
                       const isActive = sentence.words.some(
-                        (word) => word.startTime <= currentTimeMs && currentTimeMs <= word.endTime,
-                      )
+                        (word) =>
+                          word.startTime <= currentTimeMs &&
+                          currentTimeMs <= word.endTime
+                      );
 
                       return (
                         <p
                           key={i}
                           ref={isActive ? activeRef : null}
                           className={`text-base leading-relaxed transition-all duration-300 ${
-                            isActive ? "text-green-400 text-lg font-semibold" : "text-gray-300"
+                            isActive
+                              ? "text-green-400 text-lg font-semibold"
+                              : "text-gray-300"
                           }`}
                         >
                           {sentence.words.map((w) => w.data).join(" ")}
                         </p>
-                      )
+                      );
                     })}
                   </div>
                 ) : (
@@ -458,8 +458,12 @@ export default function Player() {
                       <line x1="12" y1="8" x2="12" y2="12"></line>
                       <line x1="12" y1="16" x2="12.01" y2="16"></line>
                     </svg>
-                    <p className="italic text-center">Lyrics not available for this song</p>
-                    <p className="text-sm mt-2 text-gray-600">Try another song or check back later</p>
+                    <p className="italic text-center">
+                      Lyrics not available for this song
+                    </p>
+                    <p className="text-sm mt-2 text-gray-600">
+                      Try another song or check back later
+                    </p>
                   </div>
                 )}
               </div>
@@ -514,7 +518,9 @@ export default function Player() {
             </div>
 
             <div className="flex items-center w-full gap-2">
-              <span className="text-sm text-gray-400 w-10 text-right">{formatTime(currentTime)}</span>
+              <span className="text-sm text-gray-400 w-10 text-right">
+                {formatTime(currentTime)}
+              </span>
               <Slider
                 value={[currentTime]}
                 max={currentSong?.duration || 100}
@@ -523,16 +529,28 @@ export default function Player() {
                 onValueChange={handleSeek}
               />
               <span className="text-sm text-gray-400 w-10">
-                {formatTime(currentSong?.duration != null ? currentSong.duration : duration)}
+                {formatTime(
+                  currentSong?.duration != null
+                    ? currentSong.duration
+                    : duration
+                )}
               </span>
             </div>
 
             <div className="flex items-center justify-center mt-4 gap-6">
               <div className="flex items-center gap-2">
                 {volume === 0 ? (
-                  <VolumeX size={18} className="text-gray-400 cursor-pointer" onClick={toggleMute} />
+                  <VolumeX
+                    size={18}
+                    className="text-gray-400 cursor-pointer"
+                    onClick={toggleMute}
+                  />
                 ) : (
-                  <Volume2 size={18} className="text-gray-400 cursor-pointer" onClick={toggleMute} />
+                  <Volume2
+                    size={18}
+                    className="text-gray-400 cursor-pointer"
+                    onClick={toggleMute}
+                  />
                 )}
                 <Slider
                   value={[volume]}
@@ -549,13 +567,17 @@ export default function Player() {
               />
               {showPlaylistAdd && (
                 <div className="absolute bottom-24 right-1/2 transform translate-x-1/2 bg-zinc-800/90 backdrop-blur-md rounded-xl shadow-lg p-2 w-64 z-10 border border-white/10">
-                  <p className="text-white text-xs font-medium mb-2 px-2">Add to playlist</p>
+                  <p className="text-white text-xs font-medium mb-2 px-2">
+                    Add to playlist
+                  </p>
                   <div className="max-h-40 overflow-y-auto pr-1 custom-scrollbar">
                     {playlists.map((playlist) => (
                       <button
                         key={playlist._id || playlist.id}
                         className="w-full text-left text-gray-300 hover:bg-zinc-700 text-xs py-2 px-2 rounded mb-1"
-                        onClick={() => handleAddToPlaylist(playlist._id || playlist.id)}
+                        onClick={() =>
+                          handleAddToPlaylist(playlist._id || playlist.id)
+                        }
                       >
                         {playlist.playlistName || playlist.title}
                       </button>
@@ -569,20 +591,14 @@ export default function Player() {
       ) : (
         // Non-fullscreen layout
         <>
-          <div className={`flex ${isExpanded ? "flex-col items-start gap-4" : "items-center"} w-1/4`}>
+          <div
+            className={`flex ${
+              isExpanded ? "flex-col items-start gap-4" : "items-center"
+            } w-1/4`}
+          >
             <div className="relative group">
               <img
-                src={
-                  currentSong?.thumbnail ||
-                  "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/2/6/2/7/2627c10c924237d129a289cc89cd695c.jpg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg" ||
-                  "/placeholder.svg"
-                }
+                src={currentSong?.thumbnailM || currentSong?.thumbnail}
                 alt="Album cover"
                 className={`rounded-lg shadow-2xl group-hover:brightness-90 transition-all duration-300 ${
                   isExpanded ? "h-full w-full" : "h-14 w-14"
@@ -598,7 +614,9 @@ export default function Player() {
                 {currentSong?.title || "No song playing"}
               </h4>
               <p className="text-gray-400 text-xs hover:text-white hover:underline cursor-pointer transition-colors">
-                {currentSong?.artistsNames || currentSong?.artistNames || "Unknown Artist"}
+                {currentSong?.artistsNames ||
+                  currentSong?.artistNames ||
+                  "Unknown Artist"}
               </p>
             </div>
           </div>
@@ -650,7 +668,9 @@ export default function Player() {
             </div>
 
             <div className="flex items-center w-full gap-2">
-              <span className="text-xs text-gray-400 w-10 text-right">{formatTime(currentTime)}</span>
+              <span className="text-xs text-gray-400 w-10 text-right">
+                {formatTime(currentTime)}
+              </span>
               <Slider
                 value={[currentTime]}
                 max={currentSong?.duration || 100}
@@ -659,7 +679,11 @@ export default function Player() {
                 onValueChange={handleSeek}
               />
               <span className="text-xs text-gray-400 w-10">
-                {formatTime(currentSong?.duration != null ? currentSong.duration : duration)}
+                {formatTime(
+                  currentSong?.duration != null
+                    ? currentSong.duration
+                    : duration
+                )}
               </span>
             </div>
           </div>
@@ -677,13 +701,17 @@ export default function Player() {
             />
             {showPlaylistAdd && (
               <div className="absolute bottom-full right-10 mb-2 bg-zinc-800 rounded-xl shadow-lg p-2 w-48 z-10">
-                <p className="text-white text-xs font-medium mb-2 px-2">Add to playlist</p>
+                <p className="text-white text-xs font-medium mb-2 px-2">
+                  Add to playlist
+                </p>
                 <div className="max-h-40 overflow-y-auto pr-1 custom-scrollbar">
                   {playlists.map((playlist) => (
                     <button
                       key={playlist._id || playlist.id}
                       className="w-full text-left text-gray-300 hover:bg-zinc-700 text-xs py-2 px-2 rounded mb-1"
-                      onClick={() => handleAddToPlaylist(playlist._id || playlist.id)}
+                      onClick={() =>
+                        handleAddToPlaylist(playlist._id || playlist.id)
+                      }
                     >
                       {playlist.playlistName || playlist.title}
                     </button>
@@ -693,9 +721,17 @@ export default function Player() {
             )}
             <div className="flex items-center gap-1 w-24">
               {volume === 0 ? (
-                <VolumeX size={16} className="text-gray-400 cursor-pointer" onClick={toggleMute} />
+                <VolumeX
+                  size={16}
+                  className="text-gray-400 cursor-pointer"
+                  onClick={toggleMute}
+                />
               ) : (
-                <Volume2 size={16} className="text-gray-400 cursor-pointer" onClick={toggleMute} />
+                <Volume2
+                  size={16}
+                  className="text-gray-400 cursor-pointer"
+                  onClick={toggleMute}
+                />
               )}
               <Slider
                 value={[volume]}
@@ -709,5 +745,5 @@ export default function Player() {
         </>
       )}
     </div>
-  )
+  );
 }

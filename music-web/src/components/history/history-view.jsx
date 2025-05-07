@@ -104,7 +104,7 @@ export default function HistoryPage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-900 to-black w-full text-white p-6 rounded-lg min-h-screen">
+    <div className="bg-gradient-to-b flex-1 overflow-y-auto pb-24 h-screen from-gray-900 to-black w-full text-white p-6 rounded-lg min-h-screen">
       <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
         <div className="w-48 h-48 md:w-60 md:h-60 bg-gradient-to-br from-purple-600 to-blue-400 flex items-center justify-center rounded-lg shadow-lg">
           <Clock className="h-24 w-24 text-white opacity-90" />
@@ -196,7 +196,7 @@ export default function HistoryPage() {
                         <Link to={`/lyrics/${song.encodeId}`} className="hover:underline">
                           <div className="font-medium">{song.title}</div>
                         </Link>
-                        <div className="text-gray-400">{song.artistNames}</div>
+                        <div className="text-gray-400">{song.artistsNames}</div>
                       </div>
                     </div>
                   </td>

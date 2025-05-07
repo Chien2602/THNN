@@ -19,14 +19,14 @@ const getFavorites = async (req, res) => {
 
 
 const getFavoriteById = async (req, res) => {
-  const { userId, songId } = req.params;
+  const { userId, encodeId } = req.params;
 
-  if (!userId || !songId) {
+  if (!userId || !encodeId) {
     return res.status(400).json({ message: "User ID and Song ID are required" });
   }
 
   try {
-    const favorite = await Favorite.findOne({ userId, songId });
+    const favorite = await Favorite.findOne({ userId, encodeId });
 
     if (!favorite) {
       return res.status(404).json({ message: "Favorite not found" });
@@ -52,9 +52,10 @@ const createFavorite = async (req, res) => {
     thumbnail,
     artistsNames,
     duration,
+    album
   } = req.body;
 
-  if (!userId || !encodeId || !title || !thumbnail || !artistsNames || !duration) {
+  if (!userId || !encodeId || !title || !thumbnail || !artistsNames || !duration || !album) {
     return res.status(400).json({ message: "userId and songId are required" });
   }
 
@@ -71,6 +72,7 @@ const createFavorite = async (req, res) => {
       thumbnail,
       artistsNames,
       duration,
+      album,
     });
 
     await newFavorite.save();

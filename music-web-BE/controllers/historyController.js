@@ -29,7 +29,7 @@ const getHistoryById = async (req, res) => {
 };
 
 const createHistory = async (req, res) => {
-  const { userId, encodeId, title, thumbnailM, artistNames, albumName, duration } =
+  const { userId, encodeId, title, thumbnailM, artistsNames, albumName, duration } =
     req.body;
   try {
     const findHistory = await History.findOne({ userId, encodeId });
@@ -41,7 +41,7 @@ const createHistory = async (req, res) => {
       encodeId,
       title,
       thumbnailM,
-      artistNames,
+      artistsNames,
       albumName,
       duration,
     });

@@ -15,7 +15,7 @@ const historySchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    artistNames: {
+    artistsNames: {
         type: String,
         required: true,
     },

@@ -15,7 +15,8 @@ import {
     getCategoryMV,
     getVideo,
     getGenre,
-    getAllArtist
+    getAllArtist,
+    getHotSongGenre
 } from "../controllers/musicController.js";
 
 const router = express.Router();

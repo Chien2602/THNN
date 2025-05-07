@@ -123,7 +123,8 @@ export function MainView() {
       try {
         const response = await api.get("/home");
         const data = await response.data
-        setReleaseSongs(data.data.items[3].items.all)
+        console.log(data.data.items[4].items.all)
+        setReleaseSongs(data.data.items[4].items.all)
       } catch (error) {
         setError(error)
       } finally {
@@ -212,7 +213,7 @@ export function MainView() {
 
       <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-white">Nghệ sĩ nổi bật</h2>
+          <h2 className="text-2xl font-bold text-white">Nghệ sĩ</h2>
           <button
             onClick={() => setExpandedArtists(!expandedArtists)}
             className="text-sm text-gray-400 hover:text-white flex items-center gap-1 transition-colors"
@@ -337,7 +338,7 @@ export function MainView() {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-          {(Array.isArray(releaseSongs) ? (expandedTracks ? releaseSongs : releaseSongs.slice(0, 6)) : []).map(
+          {(Array.isArray(releaseSongs) ? (expandedReleases ? releaseSongs : releaseSongs.slice(0, 12)) : []).map(
             (song, index) => (
               <div
                 key={`new-${song.encodeId}`}
@@ -370,7 +371,7 @@ export function MainView() {
         </div>
       </section>
 
-      <section className="mb-10">
+      {/* <section className="mb-10">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-2xl font-bold text-white">Thể loại</h2>
           <button
@@ -408,7 +409,7 @@ export function MainView() {
             <div className="col-span-full text-center py-10 text-gray-400">Không có thể loại nào.</div>
           )}
         </div>
-      </section>
+      </section> */}
 
       <div className="h-20"></div>
     </div>

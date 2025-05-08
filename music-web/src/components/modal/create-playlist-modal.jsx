@@ -87,23 +87,6 @@ export default function CreatePlaylistModal({ open, setOpen }) {
                 />
               </div>
             </div>
-
-            <div className="grid grid-cols-4 items-start gap-4">
-              <Label htmlFor="description" className="text-right font-medium text-gray-700 pt-2">
-                Description
-              </Label>
-              <Textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className={cn(
-                  "col-span-3 bg-gray-100 border-none",
-                  "transition-all duration-200 rounded-xl resize-none min-h-[100px]",
-                )}
-                placeholder="What's this playlist about?"
-                rows={3}
-              />
-            </div>
           </div>
           <DialogFooter className="flex gap-3 sm:gap-0 mt-2">
             <Button

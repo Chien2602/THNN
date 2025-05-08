@@ -175,11 +175,12 @@ export default function Player() {
 
     try {
       await api.post(`/playlists/${playlistId}/songs`, {
-        encodeId: currentSong.encodeId,
-        title: currentSong.title,
-        thumbnail: currentSong.thumbnail,
-        artistsNames: currentSong.artistsNames,
-        duration: currentSong.duration,
+          encodeId: currentSong.encodeId,
+          title: currentSong.title,
+          thumbnail: currentSong.thumbnailM,
+          artistsNames: currentSong.artistsNames,
+          duration: currentSong.duration,
+          album: currentSong.album.title
       });
 
       console.log(`Added song ${currentSong.title} to playlist ${playlistId}`);
@@ -256,13 +257,13 @@ export default function Player() {
         setIsLiked(false);
       } else {
         await api.post("/favorites", {
-          encodeId: currentSong.encodeId,
           userId: currentUser._id,
+          encodeId: currentSong.encodeId,
           title: currentSong.title,
-          thumbnail: currentSong.thumbnailM,
+          thumbnail: currentSong.thumbnailM || currentSong.thumbnail,
           artistsNames: currentSong.artistsNames,
           duration: currentSong.duration,
-          album: currentSong.album.title
+          album: currentSong?.album?.title || currentSong.album
         });
         console.log("Added to favorites:", currentSong.title);
         setIsLiked(true);

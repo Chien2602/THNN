@@ -35,7 +35,7 @@ export default function FavoritesPage() {
   }
 
   return (
-    <div className="w-full overflow-y-auto p-6 bg-gradient-to-b from-black to-gray-900 text-white">
+    <div className="w-full flex-1 overflow-y-auto pb-24 p-6 bg-gradient-to-b from-black to-gray-900 text-white">
       <div className="flex items-center gap-6 mb-8 w-full overflow-auto">
         <div className="w-60 h-60 bg-gradient-to-br from-pink-600 to-pink-400 flex items-center justify-center rounded shadow-lg">
           <Heart className="h-28 w-28 text-white" fill="white" />

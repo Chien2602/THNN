@@ -66,16 +66,23 @@ const deletePlaylist = async (req, res) => {
 
 const addSongToPlaylist = async (req, res) => {
   const { id } = req.params;
-  const { songId } = req.body;
+  const song = req.body;
+
   try {
     const updatedPlaylist = await Playlist.findByIdAndUpdate(
       id,
-      { $addToSet: { songs: songId } },
+      {
+        $addToSet: {
+          songs: song 
+        }
+      },
       { new: true }
     );
+
     if (!updatedPlaylist) {
       return res.status(404).json({ message: "Playlist not found" });
     }
+
     res.status(200).json(updatedPlaylist);
   } catch (error) {
     res.status(500).json({ message: "Error adding song to playlist", error });

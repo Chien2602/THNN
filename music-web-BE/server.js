@@ -31,7 +31,7 @@ app.use('/api', musicRoute);
 app.use('/', authRoute);
 
 // API PLAYLISTS
-app.use('/api', playlistRoute);
+app.use('/api/playlists', playlistRoute);
 
 // API HISTORY
 app.use('/api/history', historyRoute);

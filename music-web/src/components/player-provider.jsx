@@ -14,6 +14,9 @@ export const PlayerContext = createContext({
 
   currentUser: null,
   setCurrentUser: () => {},
+
+  currentPlaylistUser: null,
+  setCurrentPlaylistUser: () => {},
 });
 
 export const usePlayer = () => useContext(PlayerContext);
@@ -23,6 +26,7 @@ export function PlayerProvider({ children }) {
   const [currentPlaylist, setCurrentPlaylist] = useState([]);
   const [currentArtist, setCurrentArtist] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [currentPlaylistUser, setCurrentPlaylistUser] = useState(null);
 
   return (
     <PlayerContext.Provider
@@ -38,6 +42,9 @@ export function PlayerProvider({ children }) {
         
         currentUser,
         setCurrentUser,
+
+        currentPlaylistUser,
+        setCurrentPlaylistUser,
       }}
     >
       {children}

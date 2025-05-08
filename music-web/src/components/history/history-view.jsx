@@ -58,7 +58,7 @@ export default function HistoryPage() {
         method: "DELETE",
       })
       console.log("Deleted history item with ID:", songId)
-      setData((prevData) => prevData.filter((song) => song.encodeId !== songId))
+      setData((prevData) => prevData.filter((song) => song._id !== songId))
 
       toast({
         title: "Đã xóa",
@@ -211,7 +211,7 @@ export default function HistoryPage() {
                   </td>
                   <td className="py-3 pr-2">
                     <AlertDialog
-                      open={itemToDelete === song.songId}
+                      open={itemToDelete === song._id}
                       onOpenChange={(open) => !open && setItemToDelete(null)}
                     >
                       <DropdownMenu>
@@ -227,7 +227,7 @@ export default function HistoryPage() {
                         <DropdownMenuContent align="end" className="bg-gray-800 border-gray-700 text-white">
                           <DropdownMenuItem
                             className="text-red-400 hover:text-red-300 cursor-pointer"
-                            onClick={() => setItemToDelete(song.songId)}
+                            onClick={() => setItemToDelete(song._id)}
                           >
                             <Trash2 className="h-4 w-4 mr-2" />
                             Xóa khỏi lịch sử
@@ -239,7 +239,7 @@ export default function HistoryPage() {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Xóa khỏi lịch sử?</AlertDialogTitle>
                           <AlertDialogDescription className="text-gray-400">
-                            Bạn có chắc chắn muốn xóa "{song.songName}" khỏi lịch sử nghe nhạc?
+                            Bạn có chắc chắn muốn xóa "{song.title}" khỏi lịch sử nghe nhạc?
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>
@@ -248,7 +248,7 @@ export default function HistoryPage() {
                           </AlertDialogCancel>
                           <AlertDialogAction
                             onClick={() => {
-                              deleteHistoryItem(song.songId)
+                              deleteHistoryItem(song._id)
                               setItemToDelete(null)
                             }}
                             className="bg-gradient-to-br from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white rounded-full font-medium transition-all duration-200 border-0"

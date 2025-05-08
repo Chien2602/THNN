@@ -52,7 +52,7 @@ router.get("/playlists", getPlaylists);
  *       404:
  *         description: Playlist not found
  */
-router.get("/playlists/:id", getPlaylistById);
+router.get("/:id", getPlaylistById);
 
 /**
  * @swagger
@@ -83,7 +83,7 @@ router.get("/playlists/:id", getPlaylistById);
  *       201:
  *         description: Playlist created
  */
-router.post("/playlists", createPlaylist);
+router.post("/", createPlaylist);
 
 /**
  * @swagger
@@ -170,7 +170,7 @@ router.delete("/playlists/:id", deletePlaylist);
  *       404:
  *         description: Playlist not found
  */
-router.post("/playlists/:id/songs", addSongToPlaylist);
+router.post("/:id/songs", addSongToPlaylist);
 
 /**
  * @swagger
@@ -220,7 +220,7 @@ router.delete("/playlists/:id/songs", removeSongFromPlaylist);
  *       200:
  *         description: List of user's playlists
  */
-router.get("/playlists/user/:userId", getPlaylistsByUserId);
+router.get("/user/:userId", getPlaylistsByUserId);
 
 /**
  * @swagger

@@ -16,6 +16,7 @@ import ArtistPage from "./pages/ArtistPage";
 import FavoritesPage from "./pages/FavoritePage";
 import HistoryPage from "./pages/HistoryPage";
 import Player from "./components/player";
+import PlaylistUserPage from "./pages/PlaylistUserPage"; 
 import ProtectedRoute from "./ProtectedRoute";
 
 function AppContent() {
@@ -58,6 +59,13 @@ function AppContent() {
           element={
             <ProtectedRoute>
               <PlaylistPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/playlist-user"
+          element={
+            <ProtectedRoute>
+              <PlaylistUserPage />
             </ProtectedRoute>
           }
         />
